@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import { Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -9,23 +9,23 @@ const outfit = Outfit({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-cabinet",
+  variable: "--font-serif",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
   title: "Avio Advision LLP | Connecting Talent, Building Businesses",
   description:
-    "Executive search and strategic talent advisory firm committed to connecting exceptional talent with forward-thinking organizations.",
+    "Executive search, talent acquisition and strategic advisory for growing organizations. Connecting exceptional people with forward-thinking businesses to create long-term value.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.svg",
   },
   openGraph: {
     title: "Avio Advision LLP",
-    description: "Executive Search & Strategic Talent Advisory",
+    description: "Connecting Talent, Building Businesses.",
     siteName: "Avio Advision LLP",
     type: "website",
   },
@@ -37,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${plusJakartaSans.variable}`}>
-      <body className="min-h-screen bg-warm-100 font-sans text-navy-900 antialiased selection:bg-gold-500 selection:text-navy-950">
+    <html lang="en" className={`${outfit.variable} ${playfair.variable}`}>
+      <body className="min-h-screen bg-warm-100 font-sans text-navy-900 antialiased selection:bg-gold-500 selection:text-white">
         {children}
       </body>
     </html>

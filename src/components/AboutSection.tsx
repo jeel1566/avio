@@ -3,140 +3,216 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { siteConfig } from "@/config/site";
-import { Compass, Target, ShieldCheck, Sparkle, ArrowRight } from "@phosphor-icons/react";
+import {
+  ShieldCheck,
+  UsersThree,
+  Star,
+  TrendUp,
+  Quotes,
+} from "@phosphor-icons/react";
 
 export function AboutSection() {
-  const getIcon = (type: string) => {
-    switch (type) {
-      case "compass":
-        return <Compass size={28} weight="duotone" className="text-gold-600" />;
-      case "target":
-        return <Target size={28} weight="duotone" className="text-gold-600" />;
-      case "shield":
-        return <ShieldCheck size={28} weight="duotone" className="text-gold-600" />;
-      case "sparkle":
-      default:
-        return <Sparkle size={28} weight="duotone" className="text-gold-600" />;
-    }
-  };
+  const values = [
+    {
+      title: "Integrity",
+      desc: "We do what is right and build trust in everything we do.",
+      icon: <ShieldCheck size={24} weight="duotone" className="text-gold-500" />,
+    },
+    {
+      title: "Relationships",
+      desc: "We value long-term partnerships over short-term gains.",
+      icon: <UsersThree size={24} weight="duotone" className="text-gold-500" />,
+    },
+    {
+      title: "Excellence",
+      desc: "We strive for the highest standards in our work and deliver value.",
+      icon: <Star size={24} weight="duotone" className="text-gold-500" />,
+    },
+    {
+      title: "Long-Term Growth",
+      desc: "We create opportunities that lead to sustainable success.",
+      icon: <TrendUp size={24} weight="duotone" className="text-gold-500" />,
+    },
+  ];
+
+  const bottomStats = [
+    { value: "20+", label: "Strategic Partners" },
+    { value: "500+", label: "Professionals Connected" },
+    { value: "15+", label: "Industries Served" },
+    { value: "3K+", label: "Professionals Network" },
+    { value: "20+", label: "Years of Combined Experience" },
+  ];
 
   return (
-    <section id="about" className="py-20 md:py-32 bg-warm-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-20 md:py-28 bg-warm-100 overflow-hidden border-t border-navy-900/10">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
         
-        {/* Main Grid: Visual Photo Story on Left, Narrative on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        {/* Row 1: About Us Narrative & Executive Collage */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-24">
           
-          {/* Left Column: Duo Executive Photos & Floating Quote */}
+          {/* Left Column: Heading & Narrative */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 relative"
+            className="lg:col-span-5"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-navy-900/70">
+                ABOUT US
+              </span>
+              <span className="w-12 h-[1px] bg-navy-900/30 inline-block" />
+            </div>
+
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-navy-900 leading-[1.08] tracking-tight mb-6">
+              People. <br />
+              Partnerships. <br />
+              <span className="text-gold-500">Progress.</span>
+            </h2>
+
+            <p className="text-base text-slateText leading-relaxed font-normal max-w-lg">
+              We are an executive search and advisory firm committed to connecting exceptional talent with forward-thinking organizations, while building long-term relationships and driving business growth.
+            </p>
+          </motion.div>
+
+          {/* Right Column: Collaborative Boardroom Photo & Floating Cards */}
+          <motion.div
+            initial={{ opacity: 0, x: 25 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 relative"
           >
             <div className="relative">
-              {/* Top Photo */}
-              <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden shadow-lg border border-navy-900/10">
+              {/* Main Boardroom Photo */}
+              <div className="relative h-[320px] sm:h-[400px] w-full rounded-3xl overflow-hidden shadow-xl border border-navy-900/10 bg-navy-950">
                 <Image
-                  src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1000&q=80"
-                  alt="Boardroom Advisory Meeting - Avio Advision"
+                  src="/assets/about_team.png"
+                  alt="Executives collaborating in boardroom"
                   fill
-                  sizes="(max-width: 768px) 100vw, 550px"
+                  sizes="(max-width: 1024px) 100vw, 750px"
                   className="object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
 
-              {/* Bottom Photo */}
-              <div className="mt-4 relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden shadow-lg border border-navy-900/10">
-                <Image
-                  src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1000&q=80"
-                  alt="Collaborative Strategic Planning"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 550px"
-                  className="object-cover"
-                />
+              {/* Floating Navy Card Right */}
+              <div className="absolute top-6 -right-3 sm:-right-6 bg-navy-900 text-white rounded-2xl p-5 shadow-2xl border border-navy-800 max-w-[200px] sm:max-w-[220px]">
+                <p className="font-serif text-lg font-bold leading-tight">
+                  A stronger tomorrow <br />
+                  <span className="text-gold-500">together.</span>
+                </p>
+                <span className="w-8 h-[1px] bg-gold-500 mt-2 block" />
               </div>
 
-              {/* Central Floating Quote Card */}
-              <div className="absolute top-1/2 left-4 sm:-right-6 sm:left-auto -translate-y-1/2 bg-white/95 backdrop-blur-md rounded-2xl p-5 sm:p-6 shadow-2xl border border-navy-900/10 max-w-xs z-10">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gold-500/15 flex items-center justify-center text-gold-600 shrink-0">
-                    <ArrowRight size={20} weight="bold" />
-                  </div>
+              {/* Floating White Quote Card */}
+              <div className="absolute bottom-6 right-4 sm:-right-4 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-navy-900/10 max-w-[240px]">
+                <div className="flex items-start gap-2.5">
+                  <span className="font-serif text-2xl text-gold-500 leading-none">“</span>
                   <div>
-                    <p className="font-display text-sm sm:text-base font-bold text-navy-900 leading-snug">
+                    <p className="font-serif text-xs sm:text-sm font-semibold text-navy-900 leading-snug">
                       Great organizations are built by exceptional people.
                     </p>
-                    <p className="text-[11px] text-slateText/70 mt-1 font-medium">
-                      Avio Advision Core Thesis
-                    </p>
+                    <span className="w-8 h-[1px] bg-navy-900/20 mt-2 block" />
                   </div>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: Narrative Story & Learn More */}
+        </div>
+
+        {/* Row 2: Our Values */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-20">
+          
+          {/* Left Column: Curved Photo of Executive at Sunset */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 flex flex-col justify-center"
+            className="lg:col-span-5 relative"
           >
-            <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600 mb-3 block">
-              About Us
-            </span>
+            <div className="relative">
+              <div className="relative h-[340px] sm:h-[420px] w-full rounded-3xl overflow-hidden shadow-xl border border-navy-900/10 bg-navy-950">
+                <Image
+                  src="/assets/about_executive_sunset.png"
+                  alt="Executive visionary looking out city skyline at sunset"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                  className="object-cover"
+                />
+              </div>
 
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-navy-900 leading-tight mb-6">
-              People. Partnerships. <br />
-              <span className="text-navy-900">Progress.</span>
-            </h2>
+              {/* Floating Navy Card */}
+              <div className="absolute bottom-6 left-6 right-6 bg-navy-900 text-white rounded-2xl p-5 shadow-2xl border border-navy-800">
+                <p className="font-serif text-base sm:text-lg font-bold leading-snug">
+                  Building meaningful connections for a brighter{" "}
+                  <span className="text-gold-500">future.</span>
+                </p>
+                <span className="w-10 h-[1.5px] bg-gold-500 mt-2 block" />
+              </div>
+            </div>
+          </motion.div>
 
-            <p className="text-base sm:text-lg text-slateText leading-relaxed mb-6 font-normal">
-              We are an executive search and strategic talent advisory firm committed to connecting exceptional talent with forward-thinking organizations, while cultivating long-term relationships and accelerating sustainable business growth.
+          {/* Right Column: Values Header & 4 Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-navy-900/70">
+                OUR VALUES
+              </span>
+              <span className="w-12 h-[1px] bg-navy-900/30 inline-block" />
+            </div>
+
+            <h3 className="font-serif text-3xl sm:text-4xl font-bold text-navy-900 tracking-tight mb-4">
+              Guided by purpose, driven by people.
+            </h3>
+
+            <p className="text-sm sm:text-base text-slateText leading-relaxed mb-8 font-normal">
+              Our work is built on a strong foundation of integrity, relationships and a deep understanding of people and business. We believe in creating opportunities, enabling growth and making a lasting impact for organizations and professionals alike.
             </p>
 
-            <p className="text-sm sm:text-base text-slateText/90 leading-relaxed mb-8 font-normal">
-              Headquartered in Ahmedabad and serving dynamic enterprises across India and global markets, our specialized advisors unite rigorous executive assessment with deep sector insights to deliver leadership solutions that endure.
-            </p>
-
-            <div>
-              <a
-                href="#services"
-                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-sm transition-all duration-200 shadow-sm hover:shadow-gold active:scale-[0.98]"
-              >
-                <span>Explore Our Practice</span>
-                <ArrowRight weight="bold" size={14} />
-              </a>
+            {/* 4 Value Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {values.map((v, i) => (
+                <div
+                  key={v.title}
+                  className="bg-white p-5 rounded-2xl border border-navy-900/10 shadow-sm hover:shadow-md transition-all group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-warm-100 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                    {v.icon}
+                  </div>
+                  <h4 className="font-serif text-base font-bold text-navy-900 mb-1">
+                    {v.title}
+                  </h4>
+                  <p className="text-xs text-slateText leading-relaxed">
+                    {v.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </motion.div>
 
         </div>
 
-        {/* 4 Core Value Pillars */}
-        <div className="mt-20 pt-12 border-t border-navy-900/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {siteConfig.pillars.map((pillar, idx) => (
-            <motion.div
-              key={pillar.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl border border-navy-900/5 hover:border-gold-500/40 transition-all duration-300 hover:shadow-md group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-warm-200/60 flex items-center justify-center mb-4 group-hover:bg-gold-500/15 transition-colors">
-                {getIcon(pillar.icon)}
-              </div>
-              <h3 className="font-display text-lg font-bold text-navy-900 mb-2">
-                {pillar.title}
-              </h3>
-              <p className="text-sm text-slateText leading-relaxed">
-                {pillar.detail}
-              </p>
-            </motion.div>
+        {/* Row 3: Bottom Full Stats Strip */}
+        <div className="pt-10 border-t border-navy-900/10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
+          {bottomStats.map((stat, i) => (
+            <div key={stat.label} className="flex flex-col items-center">
+              <span className="font-serif text-3xl sm:text-4xl font-bold text-gold-500 tracking-tight">
+                {stat.value}
+              </span>
+              <span className="text-xs text-slateText/90 font-medium mt-1">
+                {stat.label}
+              </span>
+            </div>
           ))}
         </div>
 

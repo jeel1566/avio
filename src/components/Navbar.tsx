@@ -34,12 +34,16 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {siteConfig.navLinks.map((link) => (
+          <nav className="hidden lg:flex items-center gap-7">
+            {siteConfig.navLinks.map((link, idx) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-navy-900/80 hover:text-navy-900 transition-colors tracking-tight relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-gold-500 hover:after:w-full after:transition-all after:duration-300"
+                className={`text-xs font-semibold tracking-tight relative py-1.5 transition-colors ${
+                  idx === 0
+                    ? "text-navy-950 font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-gold-500"
+                    : "text-navy-900/75 hover:text-navy-900 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-gold-500 hover:after:w-full after:transition-all after:duration-300"
+                }`}
               >
                 {link.name}
               </a>

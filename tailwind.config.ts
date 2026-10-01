@@ -12,19 +12,20 @@ const config: Config = {
         navy: {
           950: "#061120",
           900: "#0B1F3A", // Navy Primary
+          850: "#0D2545",
           800: "#16385A", // Deep Blue
           700: "#1E4B7A",
         },
         gold: {
           300: "#EED798",
-          400: "#E2BF6F",
-          500: "#D4AB53", // Gold Accent
-          600: "#B88E36",
-          700: "#9C7324",
+          400: "#DFB86C",
+          500: "#C48B28", // Gold Accent from reference
+          600: "#B88022",
+          700: "#9C6B19",
         },
         warm: {
           50: "#FCFBF8",
-          100: "#F8F6F1", // Warm White
+          100: "#F8F6F1", // Warm White / Linen Background
           200: "#F1EBE0",
           300: "#E6DFCE",
           800: "#322E2B",
@@ -34,11 +35,12 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-outfit)", "system-ui", "sans-serif"],
-        display: ["var(--font-cabinet)", "var(--font-outfit)", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        display: ["var(--font-serif)", "Georgia", "serif"],
       },
       boxShadow: {
         premium: "0 20px 40px -15px rgba(11, 31, 58, 0.08)",
-        gold: "0 10px 25px -5px rgba(212, 171, 83, 0.3)",
+        gold: "0 10px 25px -5px rgba(196, 139, 40, 0.3)",
         glass: "0 8px 32px 0 rgba(11, 31, 58, 0.06)",
       },
       animation: {

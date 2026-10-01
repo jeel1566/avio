@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Logo } from "./Logo";
 import { siteConfig } from "@/config/site";
 import {
@@ -18,38 +19,34 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-navy-950 text-white pt-20 pb-12 border-t border-navy-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-navy-900 text-white pt-16 pb-10 border-t border-navy-800">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
         
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-white/10">
+        {/* Main Footer Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-white/10 items-start">
           
-          {/* Brand Column */}
-          <div className="lg:col-span-4 space-y-5">
+          {/* Brand Column (Cols 1-3) */}
+          <div className="lg:col-span-3 space-y-4">
             <Link href="/" className="inline-block">
               <Logo size={46} withText={true} light={true} />
             </Link>
             
-            <p className="text-sm text-white/70 leading-relaxed max-w-sm font-normal">
-              {siteConfig.description}
-            </p>
-
-            <p className="text-xs uppercase tracking-[0.2em] font-semibold text-gold-400">
-              {siteConfig.subtagline}
+            <p className="text-xs uppercase tracking-[0.22em] font-semibold text-white/60">
+              PEOPLE &nbsp;|&nbsp; PARTNERSHIPS &nbsp;|&nbsp; PROGRESS
             </p>
           </div>
 
-          {/* Quick Links Column */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-gold-400">
+          {/* Quick Links Column (Cols 4-5) */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Quick Links
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               {siteConfig.navLinks.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
+                    className="text-xs text-white/70 hover:text-gold-400 transition-colors"
                   >
                     {link.name}
                   </a>
@@ -58,17 +55,17 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Services Column */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-gold-400">
+          {/* Our Services Column (Cols 6-8) */}
+          <div className="lg:col-span-3 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Our Services
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               {siteConfig.services.map((service) => (
                 <li key={service.id}>
                   <a
                     href="#services"
-                    className="text-sm text-white/70 hover:text-white transition-colors"
+                    className="text-xs text-white/70 hover:text-gold-400 transition-colors"
                   >
                     {service.title}
                   </a>
@@ -77,61 +74,82 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact Details Column */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-gold-400">
-              Contact Information
+          {/* Contact Info Column (Cols 9-10) */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Contact Info
             </h4>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2.5 text-xs text-white/70">
-                <MapPin size={16} weight="fill" className="text-gold-400 shrink-0 mt-0.5" />
+            <ul className="space-y-2.5">
+              <li className="flex items-start gap-2 text-xs text-white/70">
+                <MapPin size={14} weight="fill" className="text-gold-400 shrink-0 mt-0.5" />
                 <span>{siteConfig.contact.address}</span>
               </li>
-              <li className="flex items-center gap-2.5 text-xs text-white/70">
-                <PhoneCall size={16} weight="fill" className="text-gold-400 shrink-0" />
-                <a href={`tel:${siteConfig.contact.phone.replace(/\s+/g, "")}`} className="hover:text-white transition-colors">
+              <li className="flex items-center gap-2 text-xs text-white/70">
+                <PhoneCall size={14} weight="fill" className="text-gold-400 shrink-0" />
+                <a href={`tel:${siteConfig.contact.phone.replace(/\s+/g, "")}`} className="hover:text-gold-400 transition-colors">
                   {siteConfig.contact.phone}
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 text-xs text-white/70">
-                <EnvelopeSimple size={16} weight="fill" className="text-gold-400 shrink-0" />
-                <a href={`mailto:${siteConfig.contact.email}`} className="hover:text-white transition-colors">
+              <li className="flex items-center gap-2 text-xs text-white/70">
+                <EnvelopeSimple size={14} weight="fill" className="text-gold-400 shrink-0" />
+                <a href={`mailto:${siteConfig.contact.email}`} className="hover:text-gold-400 transition-colors">
                   {siteConfig.contact.email}
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 text-xs text-white/70">
-                <LinkedinLogo size={16} weight="fill" className="text-gold-400 shrink-0" />
+              <li className="flex items-center gap-2 text-xs text-white/70">
+                <LinkedinLogo size={14} weight="fill" className="text-gold-400 shrink-0" />
                 <a
                   href={siteConfig.contact.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-gold-400 transition-colors"
                 >
-                  Follow on LinkedIn
+                  LinkedIn
                 </a>
               </li>
             </ul>
           </div>
 
+          {/* Right Architectural Corner Card (Cols 11-12) */}
+          <div className="lg:col-span-2 relative h-36 rounded-2xl overflow-hidden shadow-lg border border-navy-800 bg-navy-950">
+            <Image
+              src="/assets/hero_skyscraper.png"
+              alt="Skyscraper architectural perspective"
+              fill
+              sizes="200px"
+              className="object-cover opacity-60"
+            />
+            <div className="absolute inset-0 bg-navy-950/70 p-3 flex flex-col justify-end">
+              <p className="text-[9.5px] uppercase font-bold tracking-[0.2em] text-white/90 leading-tight">
+                A STRONGER TOMORROW TOGETHER.
+              </p>
+              <span className="w-8 h-[1px] bg-gold-500 mt-1 block" />
+            </div>
+          </div>
+
         </div>
 
-        {/* Bottom Bar: Copyright & Back to Top */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/50 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved. Registered in Ahmedabad, India.
+        {/* Bottom Bar: Copyright & Policy Links */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+          <p>
+            &copy; 2026 Avio Advision LLP. All rights reserved.
           </p>
 
           <div className="flex items-center gap-6">
-            <span className="text-xs uppercase tracking-widest text-white/40 hidden md:inline">
-              People &bull; Partnerships &bull; Progress
-            </span>
-
+            <a href="#about" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <span className="text-white/20">&bull;</span>
+            <a href="#about" className="hover:text-white transition-colors">
+              Terms of Use
+            </a>
+            
             <button
               onClick={scrollToTop}
-              className="w-9 h-9 rounded-full bg-navy-800 hover:bg-gold-500 text-white hover:text-navy-950 flex items-center justify-center transition-all duration-200 border border-white/10"
+              className="w-7 h-7 rounded-full bg-navy-800 hover:bg-gold-500 text-white hover:text-navy-950 flex items-center justify-center transition-all ml-2"
               aria-label="Back to Top"
             >
-              <ArrowUp size={16} weight="bold" />
+              <ArrowUp size={13} weight="bold" />
             </button>
           </div>
         </div>
