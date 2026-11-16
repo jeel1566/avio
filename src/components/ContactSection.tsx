@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { siteConfig } from "@/config/site";
 import {
   MapPin,
@@ -11,78 +11,112 @@ import {
   LinkedinLogo,
   ArrowRight,
   User,
-  Lock,
+  ChatCircleText,
+  LockKey,
   CheckCircle,
+  Tag,
+  CaretDown,
+  Buildings,
+  SpinnerGap,
+  WarningCircle,
 } from "@phosphor-icons/react";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
+    companyName: "",
+    contactPerson: "",
+    workEmail: "",
     mobile: "",
-    subject: "Executive Search",
-    message: "",
+    serviceRequired: "Executive Search & Leadership Hiring",
+    location: "Ahmedabad, Gujarat",
+    mandateDetails: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.email || !formData.message) return;
+    if (!formData.companyName || !formData.contactPerson || !formData.workEmail || !formData.mobile) return;
 
-    const subject = encodeURIComponent(`[${formData.subject}] Inquiry from ${formData.fullName}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.fullName}\nEmail: ${formData.email}\nMobile: ${formData.mobile}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`
-    );
-    window.open(`mailto:${siteConfig.contact.email}?subject=${subject}&body=${body}`, "_blank");
+    setIsSubmitting(true);
+    setErrorMessage(null);
 
-    setSubmitted(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSubmitted(true);
+      } else {
+        setErrorMessage(data.error || "Failed to submit mandate inquiry. Please try again.");
+      }
+    } catch (err) {
+      setErrorMessage("Network error occurred. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-warm-100 overflow-hidden border-t border-navy-900/10">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+    <section id="contact" className="py-20 md:py-28 bg-[#F8F6F1] relative overflow-hidden border-t border-[#0B1F3A]/10">
+      {/* Ambient background glows */}
+      <div className="absolute top-1/4 -right-40 w-96 h-96 bg-[#D4AB53]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 -left-40 w-96 h-96 bg-[#0B1F3A]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
           
-          {/* Column 1 (Left): Contact Us Narrative & Details (Cols 1-4) */}
+          {/* Column 1 (Left): Contact Narrative & Details (4 cols) */}
           <motion.div
             initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4"
+            className="lg:col-span-4 flex flex-col justify-between"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-navy-900/70">
-                CONTACT US
-              </span>
-              <span className="w-12 h-[1px] bg-navy-900/30 inline-block" />
+            <div>
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.22em] text-[#0B1F3A]">
+                  CONTACT US
+                </span>
+                <span className="w-10 sm:w-12 h-[1.5px] bg-[#0B1F3A]/40 inline-block" />
+              </div>
+
+              {/* Headline */}
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0B1F3A] leading-[1.12] tracking-tight mb-4 sm:mb-5">
+                Let's Build <br />
+                Stronger <br />
+                Possibilities <br />
+                <span className="text-[#C48B28]">Together.</span>
+              </h2>
+
+              {/* Narrative */}
+              <p className="text-sm sm:text-base text-[#4A5568] leading-relaxed mb-6 sm:mb-8 font-normal max-w-sm">
+                Whether you are an organization looking for talent solutions or a professional seeking new opportunities, we'd love to hear from you.
+              </p>
             </div>
 
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-navy-900 leading-[1.08] tracking-tight mb-5">
-              Let's Build <br />
-              Stronger <br />
-              Possibilities <br />
-              <span className="text-gold-500">Together.</span>
-            </h2>
-
-            <p className="text-sm sm:text-base text-slateText leading-relaxed mb-8 font-normal">
-              Whether you are an organization looking for talent solutions or a professional seeking new opportunities, we'd love to hear from you.
-            </p>
-
-            {/* Contact Details List */}
-            <div className="space-y-5">
+            {/* Contact Details List with Golden Badges */}
+            <div className="space-y-4 sm:space-y-5 pt-2 sm:pt-4">
               
               {/* Office */}
               <div className="flex items-start gap-3.5 group">
-                <div className="w-10 h-10 rounded-full bg-warm-200/60 flex items-center justify-center text-gold-600 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#F3EAD8] flex items-center justify-center text-[#C48B28] shrink-0 mt-0.5 shadow-xs">
                   <MapPin size={20} weight="fill" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-0.5">
                     Our Office
                   </h4>
-                  <p className="text-xs sm:text-sm text-slateText">
+                  <p className="text-xs sm:text-sm text-[#5A6A80] leading-snug">
                     {siteConfig.contact.address}
                   </p>
                 </div>
@@ -90,16 +124,16 @@ export function ContactSection() {
 
               {/* Call */}
               <div className="flex items-start gap-3.5 group">
-                <div className="w-10 h-10 rounded-full bg-warm-200/60 flex items-center justify-center text-gold-600 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#F3EAD8] flex items-center justify-center text-[#C48B28] shrink-0 mt-0.5 shadow-xs">
                   <PhoneCall size={20} weight="fill" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-0.5">
                     Call Us
                   </h4>
                   <a
                     href={`tel:${siteConfig.contact.phone.replace(/\s+/g, "")}`}
-                    className="text-xs sm:text-sm text-slateText hover:text-gold-600 transition-colors"
+                    className="text-xs sm:text-sm text-[#5A6A80] hover:text-[#C48B28] transition-colors font-medium"
                   >
                     {siteConfig.contact.phone}
                   </a>
@@ -108,16 +142,16 @@ export function ContactSection() {
 
               {/* Email */}
               <div className="flex items-start gap-3.5 group">
-                <div className="w-10 h-10 rounded-full bg-warm-200/60 flex items-center justify-center text-gold-600 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#F3EAD8] flex items-center justify-center text-[#C48B28] shrink-0 mt-0.5 shadow-xs">
                   <EnvelopeSimple size={20} weight="fill" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-0.5">
                     Email Us
                   </h4>
                   <a
                     href={`mailto:${siteConfig.contact.email}`}
-                    className="text-xs sm:text-sm text-slateText hover:text-gold-600 transition-colors"
+                    className="text-xs sm:text-sm text-[#5A6A80] hover:text-[#C48B28] transition-colors font-medium"
                   >
                     {siteConfig.contact.email}
                   </a>
@@ -126,18 +160,18 @@ export function ContactSection() {
 
               {/* LinkedIn */}
               <div className="flex items-start gap-3.5 group">
-                <div className="w-10 h-10 rounded-full bg-warm-200/60 flex items-center justify-center text-gold-600 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#F3EAD8] flex items-center justify-center text-[#C48B28] shrink-0 mt-0.5 shadow-xs">
                   <LinkedinLogo size={20} weight="fill" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-0.5">
                     Follow Us
                   </h4>
                   <a
                     href={siteConfig.contact.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs sm:text-sm text-slateText hover:text-gold-600 transition-colors"
+                    className="text-xs sm:text-sm text-[#5A6A80] hover:text-[#C48B28] transition-colors font-medium"
                   >
                     linkedin.com/company/avio-advision
                   </a>
@@ -147,172 +181,273 @@ export function ContactSection() {
             </div>
           </motion.div>
 
-          {/* Column 2 (Center): Executive Boardroom Photo with Floating Quote (Cols 5-7) */}
+          {/* Column 2 (Center): Executive Boardroom Photo (3 cols) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-3 relative h-full flex items-center justify-center"
+            className="lg:col-span-3 relative h-72 sm:h-80 lg:h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[460px] flex items-center justify-center"
           >
-            <div className="relative w-full h-[400px] sm:h-[480px] rounded-3xl overflow-hidden shadow-xl border border-navy-900/10 bg-navy-950">
+            <div className="relative w-full h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#0B1F3A]/10 bg-[#0B1F3A] group">
               <Image
                 src="/assets/contact_boardroom.png"
-                alt="Executive Boardroom Table Sunset View"
+                alt="Executive Boardroom Sunset View"
                 fill
-                sizes="(max-width: 1024px) 100vw, 400px"
-                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 360px"
+                className="object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
+                priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent" />
 
-              {/* Floating Dark Quote Card */}
-              <div className="absolute top-8 left-4 right-4 bg-navy-900/90 backdrop-blur-md rounded-2xl p-5 shadow-2xl border border-navy-800">
-                <p className="font-serif text-base sm:text-lg text-white font-bold leading-snug">
-                  “ Great conversations today create stronger{" "}
-                  <span className="text-gold-500">tomorrows. ”</span>
+              {/* Subtle gradient vignette for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 via-[#0B1F3A]/10 to-[#0B1F3A]/40 pointer-events-none" />
+
+              {/* Quote Card Overlay */}
+              <div className="absolute top-5 left-5 right-5 sm:right-auto sm:max-w-[220px] p-4 sm:p-5 rounded-xl bg-[#0B1F3A]/90 backdrop-blur-md border border-[#D4AB53]/35 shadow-2xl">
+                <p className="font-serif text-sm sm:text-base text-white leading-snug">
+                  <span className="text-[#D4AB53] text-xl font-serif">“</span>Great conversations today create stronger{" "}
+                  <span className="text-[#D4AB53] font-bold">tomorrows.„</span>
                 </p>
-                <span className="w-10 h-[1px] bg-gold-500 mt-2 block" />
+                <div className="w-8 h-[2px] bg-[#D4AB53] mt-3" />
               </div>
             </div>
           </motion.div>
 
-          {/* Column 3 (Right): Send Us a Message Form Card (Cols 8-12) */}
+          {/* Column 3 (Right): Company Tie-Up Form Card (5 cols) */}
           <motion.div
             initial={{ opacity: 0, x: 25 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 bg-white rounded-3xl p-7 sm:p-8 shadow-xl border border-navy-900/10"
+            className="lg:col-span-5 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-xl border border-[#0B1F3A]/8 flex flex-col justify-between"
           >
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-navy-900/70">
-                GET IN TOUCH
-              </span>
-              <span className="w-10 h-[1px] bg-navy-900/30 inline-block" />
-            </div>
-
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-navy-900 mb-1">
-              Send Us a Message
-            </h3>
-            <p className="text-xs sm:text-sm text-slateText mb-6">
-              Fill out the form and our team will get back to you soon.
-            </p>
-
-            {submitted ? (
-              <div className="py-10 text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center">
-                  <CheckCircle size={28} weight="fill" />
-                </div>
-                <h4 className="font-serif text-xl font-bold text-navy-900">
-                  Message Sent
-                </h4>
-                <p className="text-xs text-slateText max-w-xs mx-auto">
-                  Thank you! Your email client has been opened with your inquiry. We look forward to connecting with you.
-                </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="text-xs font-bold text-gold-600 underline pt-2"
-                >
-                  Send another message
-                </button>
+            <div>
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#0B1F3A]/80">
+                  FOR COMPANIES & ENTERPRISES
+                </span>
+                <span className="w-12 h-[1.5px] bg-[#0B1F3A]/30 inline-block" />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#0B1F3A] mb-1.5">
+                Executive & Corporate Tie-Up
+              </h3>
+              <p className="text-xs sm:text-sm text-[#5A6A80] mb-6">
+                Mandate Avio Advision for leadership hiring, strategic talent acquisition, or executive advisory.
+              </p>
+
+              {submitted ? (
+                <div className="py-12 text-center space-y-4">
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center shadow-xs">
+                    <CheckCircle size={32} weight="fill" />
+                  </div>
+                  <h4 className="font-serif text-xl font-bold text-[#0B1F3A]">
+                    Mandate Inquiry Recorded
+                  </h4>
+                  <p className="text-xs sm:text-sm text-[#5A6A80] max-w-sm mx-auto leading-relaxed">
+                    Thank you, <span className="font-semibold text-[#0B1F3A]">{formData.contactPerson || "Partner"}</span>. Your corporate tie-up mandate for <span className="font-semibold text-[#0B1F3A]">{formData.companyName || "your enterprise"}</span> has been recorded directly in our executive pipeline. Our advisory team will reach out promptly.
+                  </p>
+                  <div className="pt-2">
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setFormData({
+                          companyName: "",
+                          contactPerson: "",
+                          workEmail: "",
+                          mobile: "",
+                          serviceRequired: "Executive Search & Leadership Hiring",
+                          location: "Ahmedabad, Gujarat",
+                          mandateDetails: "",
+                        });
+                      }}
+                      className="text-xs font-bold text-[#C48B28] hover:text-[#B37B1E] underline cursor-pointer"
+                    >
+                      Submit another inquiry
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  
+                  {/* Row 1: Company Name & Contact Person */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Company Name */}
+                    <div>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <Buildings size={17} weight="bold" />
+                        </span>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Company / Enterprise Name *"
+                          value={formData.companyName}
+                          onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                          className="w-full pl-10 pr-3 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Contact Person */}
+                    <div>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <User size={17} weight="bold" />
+                        </span>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Contact Person & Title *"
+                          value={formData.contactPerson}
+                          onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                          className="w-full pl-10 pr-3 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Business Email & Mobile */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Business Email */}
+                    <div>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <EnvelopeSimple size={17} weight="bold" />
+                        </span>
+                        <input
+                          type="email"
+                          required
+                          placeholder="Business Email *"
+                          value={formData.workEmail}
+                          onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
+                          className="w-full pl-10 pr-3 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Mobile */}
+                    <div>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <PhoneCall size={17} weight="bold" />
+                        </span>
+                        <input
+                          type="tel"
+                          required
+                          placeholder="Phone / Mobile Number *"
+                          value={formData.mobile}
+                          onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                          className="w-full pl-10 pr-3 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 3: Service Required & Location */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Service Required */}
+                    <div>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <Tag size={17} weight="bold" />
+                        </span>
+                        <select
+                          value={formData.serviceRequired}
+                          onChange={(e) => setFormData({ ...formData, serviceRequired: e.target.value })}
+                          className="w-full pl-10 pr-8 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Executive Search & Leadership Hiring">Executive Search (CXO/Director)</option>
+                          <option value="Talent Acquisition & Volume Hiring">Talent Acquisition (Mid-Senior)</option>
+                          <option value="HR Advisory & Workforce Planning">HR Advisory & Workforce Strategy</option>
+                          <option value="Corporate Tie-Up & Business Alliances">Corporate Tie-Up & Alliance</option>
+                        </select>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <CaretDown size={14} weight="bold" />
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Location Hub */}
+                    <div>
+                      <div className="relative">
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <MapPin size={17} weight="bold" />
+                        </span>
+                        <select
+                          value={formData.location}
+                          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                          className="w-full pl-10 pr-8 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all appearance-none cursor-pointer"
+                        >
+                          <option value="Ahmedabad, Gujarat">Ahmedabad, Gujarat</option>
+                          <option value="Vadodara / Baroda, Gujarat">Vadodara / Baroda, Gujarat</option>
+                          <option value="Surat, Gujarat">Surat, Gujarat</option>
+                          <option value="Kalol / Gandhinagar, Gujarat">Kalol / Gandhinagar, Gujarat</option>
+                          <option value="Pan-Gujarat">Pan-Gujarat</option>
+                          <option value="Pan-India / Other">Pan-India / Other</option>
+                        </select>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8C9AA8] pointer-events-none">
+                          <CaretDown size={14} weight="bold" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mandate Details / Requirements */}
                   <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-navy-900 mb-1.5">
-                      Full Name *
-                    </label>
                     <div className="relative">
-                      <input
-                        type="text"
-                        required
-                        placeholder="Your Name"
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full pl-3 pr-3 py-3 rounded-xl bg-warm-50 border border-navy-900/15 text-xs sm:text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+                      <span className="absolute left-3.5 top-3.5 text-[#8C9AA8] pointer-events-none">
+                        <ChatCircleText size={17} weight="bold" />
+                      </span>
+                      <textarea
+                        rows={3}
+                        placeholder="Brief overview of hiring requirements, seniority level, or corporate partnership scope..."
+                        value={formData.mandateDetails}
+                        onChange={(e) => setFormData({ ...formData, mandateDetails: e.target.value })}
+                        className="w-full pl-10 pr-3 py-3 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 text-xs sm:text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all resize-none"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-navy-900 mb-1.5">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="name@company.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3 py-3 rounded-xl bg-warm-50 border border-navy-900/15 text-xs sm:text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
-                    />
-                  </div>
-                </div>
+                  {/* Error Notification */}
+                  {errorMessage && (
+                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                      <WarningCircle size={16} weight="fill" className="shrink-0 text-red-600" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-navy-900 mb-1.5">
-                      Mobile Number *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+91 79 4000 1234"
-                      value={formData.mobile}
-                      onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                      className="w-full px-3 py-3 rounded-xl bg-warm-50 border border-navy-900/15 text-xs sm:text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-navy-900 mb-1.5">
-                      Subject *
-                    </label>
-                    <select
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-3 py-3 rounded-xl bg-warm-50 border border-navy-900/15 text-xs sm:text-sm text-navy-950 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
+                  {/* Submit Button */}
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#C48B28] hover:bg-[#B37B1E] disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.99] cursor-pointer group"
                     >
-                      <option value="Executive Search">Executive Search</option>
-                      <option value="Talent Acquisition">Talent Acquisition</option>
-                      <option value="HR Advisory">HR Advisory</option>
-                      <option value="Business Networking">Business Networking</option>
-                      <option value="General Inquiry">General Inquiry</option>
-                    </select>
+                      {isSubmitting ? (
+                        <>
+                          <SpinnerGap size={18} weight="bold" className="animate-spin" />
+                          <span>Submitting Mandate...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Submit Executive Mandate</span>
+                          <ArrowRight weight="bold" size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-navy-900 mb-1.5">
-                    Your Message *
-                  </label>
-                  <textarea
-                    rows={3}
-                    required
-                    placeholder="Tell us about your organization's goals..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-3 py-3 rounded-xl bg-warm-50 border border-navy-900/15 text-xs sm:text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 resize-none"
-                  />
-                </div>
+                  {/* Security Guarantee */}
+                  <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-[#5A6A80]">
+                    <LockKey size={13} weight="bold" className="text-[#C48B28]" />
+                    <span>Strict Executive Confidentiality &amp; NDA Protection Assured.</span>
+                  </div>
 
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-white font-bold text-sm transition-all duration-200 shadow-md hover:shadow-gold active:scale-[0.99] cursor-pointer"
-                  >
-                    <span>Send Message</span>
-                    <ArrowRight weight="bold" size={16} />
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-center gap-2 pt-2 text-[10px] text-slateText/70">
-                  <Lock size={12} weight="fill" />
-                  <span>Your information is secure and will only be used for official communication.</span>
-                </div>
-              </form>
-            )}
+                </form>
+              )}
+            </div>
           </motion.div>
 
         </div>

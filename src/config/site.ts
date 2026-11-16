@@ -22,10 +22,10 @@ export const siteConfig = {
     { label: "Partner Companies", value: "150+" },
   ],
   navLinks: [
-    { name: "Home", href: "#" },
+    { name: "Home", href: "#home" },
     { name: "About Us", href: "#about" },
     { name: "Company Profile", href: "#services" },
-    { name: "Connections", href: "#network" },
+    { name: "Connections", href: "#connections" },
     { name: "Career Opportunities", href: "#careers" },
     { name: "Contact", href: "#contact" },
   ],

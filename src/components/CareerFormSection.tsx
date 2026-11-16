@@ -12,7 +12,12 @@ import {
   Trash,
   ArrowRight,
   SpinnerGap,
+  ShieldCheck,
+  Briefcase,
+  Scales,
+  Handshake,
   Sparkle,
+  LockKey,
 } from "@phosphor-icons/react";
 
 interface FormState {
@@ -136,10 +141,10 @@ export function CareerFormSection() {
         );
         // Trigger celebratory confetti
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 85,
+          spread: 75,
           origin: { y: 0.6 },
-          colors: ["#D4AB53", "#0B1F3A", "#E2BF6F"],
+          colors: ["#D4AB53", "#0B1F3A", "#C48B28"],
         });
 
         // Reset form fields
@@ -156,7 +161,7 @@ export function CareerFormSection() {
         setSubmitStatus("error");
         setStatusMessage(data.error || "Failed to submit application. Please try again.");
       }
-    } catch (err) {
+    } catch {
       setSubmitStatus("error");
       setStatusMessage("Network error occurred while submitting your application.");
     } finally {
@@ -165,34 +170,44 @@ export function CareerFormSection() {
   };
 
   return (
-    <section id="careers" className="py-20 md:py-32 bg-warm-100 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="careers" className="py-20 md:py-28 bg-[#F8F6F1] relative overflow-hidden border-t border-[#0B1F3A]/10">
+      {/* Ambient background glows */}
+      <div className="absolute top-1/4 -right-40 w-96 h-96 bg-[#D4AB53]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 -left-40 w-96 h-96 bg-[#0B1F3A]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* Section Header */}
+        <div className="max-w-3xl mb-12 md:mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.22em] text-[#0B1F3A]">
+              CAREER OPPORTUNITIES
+            </span>
+            <span className="w-10 sm:w-12 h-[1.5px] bg-[#0B1F3A]/40 inline-block" />
+          </div>
+
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0B1F3A] leading-[1.12] tracking-tight mb-4 sm:mb-5">
+            Find Your Next <br />
+            <span className="text-[#C48B28]">Executive Opportunity.</span>
+          </h2>
+
+          <p className="text-sm sm:text-base text-[#4A5568] leading-relaxed font-normal">
+            Submit your credentials to our confidential talent advisory. When high-caliber leadership and specialist roles align with your background across India, our partners will reach out directly.
+          </p>
+        </div>
+
+        {/* Main Grid: Form (7 cols) + Executive Advisory Showcase (5 cols) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* Left Column: Form Content */}
+          {/* Left Column: Application Form Container */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7"
+            className="lg:col-span-7 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-xl border border-[#0B1F3A]/8"
           >
-            {/* Header */}
-            <div className="mb-8">
-              <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-gold-600 mb-2 block">
-                Career Opportunities
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-navy-900 leading-tight mb-4">
-                Find Your Next <br />
-                <span className="text-navy-900">Opportunity.</span>
-              </h2>
-              <p className="text-base text-slateText leading-relaxed">
-                Submit your profile and our executive search and recruitment practice will connect you with confidential, high-caliber career opportunities.
-              </p>
-            </div>
-
-            {/* Submission Status Alerts */}
+            {/* Status Feedback Alerts */}
             <AnimatePresence>
               {submitStatus === "success" && (
                 <motion.div
@@ -226,20 +241,22 @@ export function CareerFormSection() {
             </AnimatePresence>
 
             {/* Application Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              
+              {/* Row 1: Full Name & Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Full Name */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
-                    Full Name <span className="text-gold-600">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-2">
+                    Full Name <span className="text-[#C48B28]">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="e.g. Rahul Sharma"
                     value={form.fullName}
                     onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-white border text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 transition-all ${
-                      fieldErrors.fullName ? "border-rose-400 bg-rose-50/20" : "border-navy-900/15"
+                    className={`w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all ${
+                      fieldErrors.fullName ? "border-rose-400 bg-rose-50/20" : "border-[#0B1F3A]/15 hover:border-[#0B1F3A]/30"
                     }`}
                   />
                   {fieldErrors.fullName && (
@@ -249,16 +266,16 @@ export function CareerFormSection() {
 
                 {/* Email Address */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
-                    Email Address <span className="text-gold-600">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-2">
+                    Email Address <span className="text-[#C48B28]">*</span>
                   </label>
                   <input
                     type="email"
                     placeholder="e.g. rahul@example.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-white border text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 transition-all ${
-                      fieldErrors.email ? "border-rose-400 bg-rose-50/20" : "border-navy-900/15"
+                    className={`w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all ${
+                      fieldErrors.email ? "border-rose-400 bg-rose-50/20" : "border-[#0B1F3A]/15 hover:border-[#0B1F3A]/30"
                     }`}
                   />
                   {fieldErrors.email && (
@@ -267,19 +284,20 @@ export function CareerFormSection() {
                 </div>
               </div>
 
+              {/* Row 2: Mobile Number & PIN Code */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Mobile Number */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
-                    Mobile Number <span className="text-gold-600">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-2">
+                    Mobile Number <span className="text-[#C48B28]">*</span>
                   </label>
                   <input
                     type="tel"
                     placeholder="+91 98765 43210"
                     value={form.mobile}
                     onChange={(e) => setForm({ ...form, mobile: e.target.value })}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-white border text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 transition-all ${
-                      fieldErrors.mobile ? "border-rose-400 bg-rose-50/20" : "border-navy-900/15"
+                    className={`w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all ${
+                      fieldErrors.mobile ? "border-rose-400 bg-rose-50/20" : "border-[#0B1F3A]/15 hover:border-[#0B1F3A]/30"
                     }`}
                   />
                   {fieldErrors.mobile && (
@@ -289,16 +307,16 @@ export function CareerFormSection() {
 
                 {/* PIN Code */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
-                    PIN Code <span className="text-gold-600">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-2">
+                    PIN Code <span className="text-[#C48B28]">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="e.g. 380015"
                     value={form.pinCode}
                     onChange={(e) => setForm({ ...form, pinCode: e.target.value })}
-                    className={`w-full px-4 py-3.5 rounded-xl bg-white border text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 transition-all ${
-                      fieldErrors.pinCode ? "border-rose-400 bg-rose-50/20" : "border-navy-900/15"
+                    className={`w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all ${
+                      fieldErrors.pinCode ? "border-rose-400 bg-rose-50/20" : "border-[#0B1F3A]/15 hover:border-[#0B1F3A]/30"
                     }`}
                   />
                   {fieldErrors.pinCode && (
@@ -307,18 +325,18 @@ export function CareerFormSection() {
                 </div>
               </div>
 
-              {/* Location/Area */}
+              {/* Row 3: Location / Area */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
-                  Location / Area <span className="text-gold-600">*</span>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-2">
+                  Location / Area <span className="text-[#C48B28]">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Bodakdev / SG Highway, Ahmedabad"
                   value={form.location}
                   onChange={(e) => setForm({ ...form, location: e.target.value })}
-                  className={`w-full px-4 py-3.5 rounded-xl bg-white border text-sm text-navy-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/40 transition-all ${
-                    fieldErrors.location ? "border-rose-400 bg-rose-50/20" : "border-navy-900/15"
+                  className={`w-full px-4 py-3.5 rounded-xl bg-[#FAF8F5] border text-sm text-[#0B1F3A] placeholder-[#8C9AA8] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C48B28]/30 transition-all ${
+                    fieldErrors.location ? "border-rose-400 bg-rose-50/20" : "border-[#0B1F3A]/15 hover:border-[#0B1F3A]/30"
                   }`}
                 />
                 {fieldErrors.location && (
@@ -326,9 +344,9 @@ export function CareerFormSection() {
                 )}
               </div>
 
-              {/* Resume Upload Box */}
+              {/* Row 4: Resume / CV Upload Dropzone */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#0B1F3A] mb-2">
                   Resume / Curriculum Vitae (PDF, DOC, DOCX up to 5MB)
                 </label>
                 
@@ -344,29 +362,29 @@ export function CareerFormSection() {
                 {!selectedFile ? (
                   <label
                     htmlFor="resume-file-input"
-                    className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-navy-900/20 rounded-2xl bg-white/70 hover:bg-white hover:border-gold-500/70 transition-all cursor-pointer group"
+                    className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-[#0B1F3A]/20 rounded-2xl bg-[#FAF8F5] hover:bg-white hover:border-[#C48B28] transition-all cursor-pointer group"
                   >
-                    <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-600 group-hover:scale-110 transition-transform mb-3">
+                    <div className="w-12 h-12 rounded-full bg-[#F3EAD8] flex items-center justify-center text-[#C48B28] group-hover:scale-110 transition-transform mb-3 shadow-xs">
                       <UploadSimple size={24} weight="bold" />
                     </div>
-                    <p className="text-sm font-semibold text-navy-900 text-center">
-                      Choose file or drag and drop
+                    <p className="text-sm font-semibold text-[#0B1F3A] text-center">
+                      Choose file or drag & drop here
                     </p>
-                    <p className="text-xs text-slateText/70 mt-1">
+                    <p className="text-xs text-[#5A6A80] mt-1">
                       PDF, DOC, DOCX (Max 5MB)
                     </p>
                   </label>
                 ) : (
-                  <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-navy-900/15 shadow-sm">
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-[#FAF8F5] border border-[#0B1F3A]/15 shadow-sm">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-navy-900/5 flex items-center justify-center text-navy-900">
-                        <FileText size={22} weight="duotone" />
+                      <div className="w-10 h-10 rounded-lg bg-[#F3EAD8] flex items-center justify-center text-[#C48B28]">
+                        <FileText size={22} weight="bold" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-navy-900 truncate max-w-[220px] sm:max-w-xs">
+                        <p className="text-sm font-bold text-[#0B1F3A] truncate max-w-[200px] sm:max-w-xs">
                           {selectedFile.name}
                         </p>
-                        <p className="text-xs text-slateText/70">
+                        <p className="text-xs text-[#5A6A80]">
                           {(selectedFile.size / 1024).toFixed(1)} KB
                         </p>
                       </div>
@@ -374,7 +392,7 @@ export function CareerFormSection() {
                     <button
                       type="button"
                       onClick={handleRemoveFile}
-                      className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                      className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                       title="Remove file"
                     >
                       <Trash size={18} weight="bold" />
@@ -387,63 +405,142 @@ export function CareerFormSection() {
                 )}
               </div>
 
-              {/* Submit Trigger */}
+              {/* Confidentiality Assurance Notice */}
+              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#F8F6F1] border border-[#0B1F3A]/8 text-xs text-[#5A6A80]">
+                <LockKey size={18} weight="bold" className="text-[#C48B28] shrink-0" />
+                <span>
+                  <strong>Strict Confidentiality:</strong> Your profile is never shared with any employer without your prior discussion and consent.
+                </span>
+              </div>
+
+              {/* Submit Button */}
               <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-base transition-all duration-200 shadow-md hover:shadow-gold active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-[#C48B28] hover:bg-[#B37B1E] text-white font-bold text-base transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer group"
                 >
                   {isSubmitting ? (
                     <>
                       <SpinnerGap size={20} className="animate-spin" />
-                      <span>Submitting Application...</span>
+                      <span>Transmitting Profile to Advisory...</span>
                     </>
                   ) : (
                     <>
-                      <span>Submit Application</span>
-                      <ArrowRight weight="bold" size={16} />
+                      <span>Submit Career Profile</span>
+                      <ArrowRight weight="bold" size={16} className="group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </button>
               </div>
+
             </form>
           </motion.div>
 
-          {/* Right Column: Editorial Support Portrait Card */}
+          {/* Right Column: Executive Advisory Pillars Card (Deep Navy) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 relative"
+            initial={{ opacity: 0, x: 25 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 space-y-6"
           >
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-navy-900/10 bg-navy-950">
-              <div className="relative h-[480px] sm:h-[540px] w-full">
-                <Image
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=85"
-                  alt="Candidate Support - Avio Advision"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 500px"
-                  className="object-cover object-center filter brightness-[0.95] contrast-[1.05]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-transparent" />
+            {/* Dark Navy Pillar Card */}
+            <div className="bg-[#0B1F3A] text-white rounded-3xl p-7 sm:p-9 shadow-xl border border-[#0B1F3A]">
+              
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#16385A] border border-[#D4AB53]/30 text-[#D4AB53] text-[11px] font-bold uppercase tracking-wider mb-6">
+                <Sparkle size={14} weight="fill" />
+                <span>Executive Advisory</span>
+              </div>
+
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-4 leading-snug">
+                Why Senior Leaders <br />
+                <span className="text-[#D4AB53]">Trust Avio Advision.</span>
+              </h3>
+
+              <p className="text-xs text-white/70 leading-relaxed mb-8">
+                Executive moves define decades of legacy. We act as confidential career partners to C-suite, VPs, and specialized technical leaders across sectors.
+              </p>
+
+              {/* 4 Value Points */}
+              <div className="space-y-5 border-t border-white/10 pt-6">
                 
-                {/* Floating Corner Badge */}
-                <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-2xl border border-navy-900/10 max-w-[200px]">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-navy-900/60">
-                      Advisory
-                    </span>
-                    <Sparkle size={16} weight="fill" className="text-gold-500" />
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-[#16385A] border border-[#D4AB53]/30 flex items-center justify-center text-[#D4AB53] shrink-0 mt-0.5">
+                    <ShieldCheck size={20} weight="bold" />
                   </div>
-                  <h4 className="font-display text-base font-bold text-navy-900 leading-snug">
-                    Your Career <br />
-                    <span className="text-navy-900">Our Support.</span>
-                  </h4>
+                  <div>
+                    <h4 className="font-bold text-sm text-white mb-0.5">
+                      Confidential Representation
+                    </h4>
+                    <p className="text-xs text-white/70 leading-relaxed">
+                      Your identity and current standing remain strictly protected throughout all initial board explorations.
+                    </p>
+                  </div>
                 </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-[#16385A] border border-[#D4AB53]/30 flex items-center justify-center text-[#D4AB53] shrink-0 mt-0.5">
+                    <Briefcase size={20} weight="bold" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white mb-0.5">
+                      Unadvertised C-Suite Mandates
+                    </h4>
+                    <p className="text-xs text-white/70 leading-relaxed">
+                      Access exclusive board, MD, and senior director searches that never appear on public job boards.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-[#16385A] border border-[#D4AB53]/30 flex items-center justify-center text-[#D4AB53] shrink-0 mt-0.5">
+                    <Scales size={20} weight="bold" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white mb-0.5">
+                      Compensation & Board Advisory
+                    </h4>
+                    <p className="text-xs text-white/70 leading-relaxed">
+                      Industry benchmark analysis, equity structures, and strategic terms negotiated on your behalf.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-[#16385A] border border-[#D4AB53]/30 flex items-center justify-center text-[#D4AB53] shrink-0 mt-0.5">
+                    <Handshake size={20} weight="bold" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white mb-0.5">
+                      Long-Term Relationship
+                    </h4>
+                    <p className="text-xs text-white/70 leading-relaxed">
+                      We support your growth over the arc of your entire leadership career, not just a single transition.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Bottom Quote Accent Card */}
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#0B1F3A]/8 flex items-start gap-4">
+              <span className="font-serif text-4xl text-[#C48B28] leading-none select-none">
+                “
+              </span>
+              <div>
+                <p className="font-serif italic text-sm text-[#0B1F3A] leading-relaxed mb-2">
+                  Exceptional organizations are built by exceptional people. We ensure top talent finds the platform it truly deserves.
+                </p>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#5A6A80]">
+                  Avio Advision LLP &bull; Executive Search
+                </p>
               </div>
             </div>
+
           </motion.div>
 
         </div>
